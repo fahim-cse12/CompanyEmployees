@@ -29,7 +29,7 @@ namespace CompanyEmployees.Presentation.Controllers
         }
 
         
-        [HttpPost]
+        [HttpPost(Name = "CreateCompany") ]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto company)
         {           
@@ -64,6 +64,13 @@ namespace CompanyEmployees.Presentation.Controllers
         {
             await _service.CompanyService.UpdateCompanyAsync(id, company, trackChanges: true);
             return NoContent();
+        }
+
+        [HttpOptions]
+        public IActionResult GetCompaniesOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
+            return Ok();
         }
     }
 }
