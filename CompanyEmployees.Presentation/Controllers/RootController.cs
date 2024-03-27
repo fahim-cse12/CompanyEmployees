@@ -28,7 +28,8 @@ namespace CompanyEmployees.Presentation.Controllers
                 {
                     new Link
                     {
-                       Href = _linkGenerator.GetUriByName(HttpContext, nameof(GetRoot), new{}),Rel = "self", Method = "GET"                    },
+                       Href = _linkGenerator.GetUriByName(HttpContext, nameof(GetRoot), new{}),Rel = "self", Method = "GET"
+                    },
                     new Link
                     {
                         Href = _linkGenerator.GetUriByName(HttpContext, "GetCompanies", new{}), Rel = "companies", Method = "GET"
