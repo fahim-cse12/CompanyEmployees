@@ -76,5 +76,6 @@ namespace CompanyEmployees.Extentions
                 opt.Conventions.Controller<CompaniesV2Controller>().HasDeprecatedApiVersion(new ApiVersion(2, 0));
             });
         }
+        public static void ConfigureOutputCaching(this IServiceCollection services) => services.AddOutputCache();
     }
 }
