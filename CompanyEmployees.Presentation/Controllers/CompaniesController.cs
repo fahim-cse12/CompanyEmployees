@@ -11,14 +11,15 @@ namespace CompanyEmployees.Presentation.Controllers
   
     [Route("api/companies")]
     [ApiController]
- //   [ResponseCache(CacheProfileName = "120SecondsDuration")]
+    //   [ResponseCache(CacheProfileName = "120SecondsDuration")]
+    [OutputCache(PolicyName = "120SecondsDuration")]
     public class CompaniesController : ControllerBase
     {
         private readonly IServiceManager _service;
         public CompaniesController(IServiceManager service) => _service = service;
 
         [HttpGet]
-        [ResponseCache(Duration = 60)]
+      //  [ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _service.CompanyService.GetAllCompaniesAsync(trackChanges: false);
@@ -30,7 +31,7 @@ namespace CompanyEmployees.Presentation.Controllers
         public async Task<IActionResult> GetCompany(Guid id)
         {
             var company = await _service.CompanyService.GetCompanyAsync(id, trackChanges: false);
-            return Ok(company);
+            return Ok(company);    
         }
 
         

@@ -69,13 +69,19 @@ namespace CompanyEmployees.Extentions
                 opt.AssumeDefaultVersionWhenUnspecified = true;
                 opt.DefaultApiVersion = new ApiVersion(1, 0);
                 opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
-            })
-            .AddMvc(opt =>
-            {
-                opt.Conventions.Controller<CompaniesController>().HasApiVersion(new ApiVersion(1, 0));
-                opt.Conventions.Controller<CompaniesV2Controller>().HasDeprecatedApiVersion(new ApiVersion(2, 0));
-            });
+            }).AddMvc(opt =>
+             {
+                 opt.Conventions.Controller<CompaniesController>()
+                    .HasApiVersion(new ApiVersion(1, 0));
+                 opt.Conventions.Controller<CompaniesV2Controller>()
+                     .HasDeprecatedApiVersion(new ApiVersion(2, 0));
+             });
         }
-        public static void ConfigureOutputCaching(this IServiceCollection services) => services.AddOutputCache();
+        public static void ConfigureOutputCaching(this IServiceCollection services) =>
+                                                 services.AddOutputCache(opt =>
+                                                 {
+                                                     // opt.AddBasePolicy(bp => bp.Expire(TimeSpan.FromSeconds(10)));
+                                                     opt.AddPolicy("120SecondsDuration", p => p.Expire(TimeSpan.FromSeconds(120)));
+                                                 });
     }
 }

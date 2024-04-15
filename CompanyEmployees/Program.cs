@@ -45,6 +45,7 @@ builder.Services.AddCustomMediaTypes();
 builder.Services.AddScoped<ValidateMediaTypeAttribute>();
 builder.Services.AddScoped<IEmployeeLinks, EmployeeLinks>();
 //builder.Services.ConfigureResponseCaching();
+builder.Services.ConfigureVersioning();
 builder.Services.ConfigureOutputCaching();
 builder.Services.AddControllers(config =>
 {
