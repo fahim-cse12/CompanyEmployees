@@ -57,6 +57,10 @@ builder.Services.AddControllers(config =>
     //    Duration = 120
     //});
 });
+builder.Services.ConfigureRateLimitingOptions();
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(builder.Configuration);
 
 var app = builder.Build();
 
@@ -72,9 +76,11 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.All
 });
+app.UseRateLimiter();
 app.UseCors("CorsPolicy");
 //app.UseResponseCaching();
 app.UseOutputCache();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 using Repository;
-using System.Runtime.CompilerServices;
 
 namespace CompanyEmployees.ContextFactory
 {

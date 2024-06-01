@@ -1,8 +1,10 @@
 ﻿using Asp.Versioning;
 using CompanyEmployees.Presentation.ActionFilters;
 using CompanyEmployees.Presentation.ModelBinders;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.AspNetCore.RateLimiting;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 
@@ -18,8 +20,9 @@ namespace CompanyEmployees.Presentation.Controllers
         private readonly IServiceManager _service;
         public CompaniesController(IServiceManager service) => _service = service;
 
-        [HttpGet]
-      //  [ResponseCache(Duration = 60)]
+        [HttpGet(Name = "GetCompanies")]
+        [Authorize(Roles = "Manager")]
+        [EnableRateLimiting("SpecificPolicy")]
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _service.CompanyService.GetAllCompaniesAsync(trackChanges: false);
@@ -28,9 +31,12 @@ namespace CompanyEmployees.Presentation.Controllers
 
         [HttpGet("{id:guid}", Name = "CompanyById")]
         [OutputCache(Duration = 60)]
+        [DisableRateLimiting]
         public async Task<IActionResult> GetCompany(Guid id)
         {
             var company = await _service.CompanyService.GetCompanyAsync(id, trackChanges: false);
+            var etag = $"\"{Guid.NewGuid():n}\"";
+            HttpContext.Response.Headers.ETag = etag;
             return Ok(company);    
         }
 
