@@ -13,6 +13,8 @@ namespace CompanyEmployees.Presentation.Controllers
   
     [Route("api/companies")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+
     //   [ResponseCache(CacheProfileName = "120SecondsDuration")]
     [OutputCache(PolicyName = "120SecondsDuration")]
     public class CompaniesController : ControllerBase

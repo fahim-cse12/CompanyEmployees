@@ -61,12 +61,21 @@ builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.AddJwtConfiguration(builder.Configuration);
+builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 //var logger = app.Services.GetRequiredService<ILoggerManager>(); 01313413114
 //app.ConfigureExceptionHandler(logger);
+app.UseSwagger();
+app.UseSwaggerUI(s =>
+{
+    s.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Maze API v1");
+    s.SwaggerEndpoint("/swagger/v2/swagger.json", "Code Maze API v2");
+});
+
 app.UseExceptionHandler(opt => { });
 if (app.Environment.IsProduction())
     app.UseHsts();
