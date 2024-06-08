@@ -147,7 +147,9 @@ namespace CompanyEmployees.Extentions
         {
             var jwtConfiguration = new JwtConfiguration();
             configuration.Bind(jwtConfiguration.Section, jwtConfiguration);
+
             var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -161,14 +163,14 @@ namespace CompanyEmployees.Extentions
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+
                     ValidIssuer = jwtConfiguration.ValidIssuer,
                     ValidAudience = jwtConfiguration.ValidAudience,
-
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 };
             });
         }
-        public static void AddJwtConfiguration(this IServiceCollection services,IConfiguration configuration) => 
+        public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration) =>
                                        services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -185,7 +187,32 @@ namespace CompanyEmployees.Extentions
                     Title = "Code Maze API",
                     Version = "v2"
                 });
+
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Place to add JWT with Bearer",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                   {
+                      new OpenApiSecurityScheme
+                      {
+                         Reference = new OpenApiReference
+                         {
+                               Type = ReferenceType.SecurityScheme,
+                               Id = "Bearer"
+                         },
+                         Name = "Bearer",
+                      },
+                      new List<string>()
+                   }
+                });
             });
+            
         }
 
 

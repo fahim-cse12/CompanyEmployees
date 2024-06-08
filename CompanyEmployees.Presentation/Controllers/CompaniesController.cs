@@ -14,7 +14,7 @@ namespace CompanyEmployees.Presentation.Controllers
     [Route("api/companies")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
-
+    [Authorize]
     //   [ResponseCache(CacheProfileName = "120SecondsDuration")]
     [OutputCache(PolicyName = "120SecondsDuration")]
     public class CompaniesController : ControllerBase
@@ -23,7 +23,7 @@ namespace CompanyEmployees.Presentation.Controllers
         public CompaniesController(IServiceManager service) => _service = service;
 
         [HttpGet(Name = "GetCompanies")]
-        [Authorize(Roles = "Manager")]
+        //[Authorize(Roles = "Manager")]
         [EnableRateLimiting("SpecificPolicy")]
         public async Task<IActionResult> GetCompanies()
         {
@@ -33,6 +33,7 @@ namespace CompanyEmployees.Presentation.Controllers
 
         [HttpGet("{id:guid}", Name = "CompanyById")]
         [OutputCache(Duration = 60)]
+        [Authorize(Roles = "Manager")]
         [DisableRateLimiting]
         public async Task<IActionResult> GetCompany(Guid id)
         {
