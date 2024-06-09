@@ -1,6 +1,8 @@
 ﻿using Asp.Versioning;
 using CompanyEmployees.Presentation.ActionFilters;
+using CompanyEmployees.Presentation.Extensions;
 using CompanyEmployees.Presentation.ModelBinders;
+using Entities.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
@@ -17,7 +19,7 @@ namespace CompanyEmployees.Presentation.Controllers
     [Authorize]
     //   [ResponseCache(CacheProfileName = "120SecondsDuration")]
     [OutputCache(PolicyName = "120SecondsDuration")]
-    public class CompaniesController : ControllerBase
+    public class CompaniesController : ApiControllerBase
     {
         private readonly IServiceManager _service;
         public CompaniesController(IServiceManager service) => _service = service;
@@ -27,19 +29,27 @@ namespace CompanyEmployees.Presentation.Controllers
         [EnableRateLimiting("SpecificPolicy")]
         public async Task<IActionResult> GetCompanies()
         {
-            var companies = await _service.CompanyService.GetAllCompaniesAsync(trackChanges: false);
+            //var companies = await _service.CompanyService.GetAllCompaniesAsync(trackChanges: false);
+            //return Ok(companies);
+            var baseResult = await _service.CompanyService.GetAllCompaniesAsync(trackChanges:false);
+            var companies = baseResult.GetResult<IEnumerable<CompanyDto>>();
             return Ok(companies);
         }
 
         [HttpGet("{id:guid}", Name = "CompanyById")]
         [OutputCache(Duration = 60)]
-        [Authorize(Roles = "Manager")]
+       // [Authorize(Roles = "Manager")]
         [DisableRateLimiting]
         public async Task<IActionResult> GetCompany(Guid id)
         {
-            var company = await _service.CompanyService.GetCompanyAsync(id, trackChanges: false);
+            var baseResult = await _service.CompanyService.GetCompanyAsync(id, trackChanges: false);
+            if (!baseResult.Success)
+            {
+                return ProcessError(baseResult);
+            }
             var etag = $"\"{Guid.NewGuid():n}\"";
             HttpContext.Response.Headers.ETag = etag;
+            var company = baseResult.GetResult<CompanyDto>();
             return Ok(company);    
         }
 
