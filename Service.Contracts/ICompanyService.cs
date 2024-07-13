@@ -11,8 +11,7 @@ namespace Service.Contracts
         Task<ApiBaseResponse> GetCompanyAsync(Guid companyId, bool trackChanges);
         Task<CompanyDto> CreateCompanyAsync(CompanyForCreationDto company);
         Task<IEnumerable<CompanyDto>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
-        Task<(IEnumerable<CompanyDto> companies, string ids)>
-        CreateCompanyCollectionAsync(IEnumerable<CompanyForCreationDto> companyCollection);
+        Task<(IEnumerable<CompanyDto> companies, string ids)> CreateCompanyCollectionAsync(IEnumerable<CompanyForCreationDto> companyCollection);
         Task DeleteCompanyAsync(Guid companyId, bool trackChanges);
         Task UpdateCompanyAsync(Guid companyid, CompanyForUpdateDto companyForUpdate,
         bool trackChanges);

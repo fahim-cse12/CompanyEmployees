@@ -1,8 +1,6 @@
-﻿using Asp.Versioning;
-using CompanyEmployees.Presentation.ActionFilters;
+﻿using CompanyEmployees.Presentation.ActionFilters;
 using CompanyEmployees.Presentation.Extensions;
 using CompanyEmployees.Presentation.ModelBinders;
-using Entities.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
@@ -12,7 +10,7 @@ using Shared.DataTransferObjects;
 
 namespace CompanyEmployees.Presentation.Controllers
 {
-  
+
     [Route("api/companies")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -97,5 +95,7 @@ namespace CompanyEmployees.Presentation.Controllers
             Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
             return Ok();
         }
+
+
     }
 }

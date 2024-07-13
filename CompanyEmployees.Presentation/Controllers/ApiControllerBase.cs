@@ -7,6 +7,7 @@ namespace CompanyEmployees.Presentation.Controllers
 {
     public class ApiControllerBase : ControllerBase
     {
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult ProcessError(ApiBaseResponse baseResponse)
         {
             return baseResponse switch

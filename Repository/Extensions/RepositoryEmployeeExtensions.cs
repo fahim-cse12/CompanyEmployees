@@ -19,8 +19,7 @@ namespace Repository.Extensions
             return employees.Where(e => e.Name.ToLower().Contains(lowerCaseTerm));
         }
 
-        public static IQueryable<Employee> Sort(this IQueryable<Employee> employees, string
-  orderByQueryString)
+        public static IQueryable<Employee> Sort(this IQueryable<Employee> employees, string orderByQueryString)
         {
             if (string.IsNullOrWhiteSpace(orderByQueryString))
                 return employees.OrderBy(e => e.Name);
